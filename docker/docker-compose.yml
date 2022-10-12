@@ -1,0 +1,53 @@
+version: '3.3'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: dotnetowiec
+      MONGO_INITDB_ROOT_PASSWORD: lubie.Net!
+    ports:
+      - 27017:27017
+    networks:
+      - mongo_net
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: dotnetowiec
+      ME_CONFIG_MONGODB_ADMINPASSWORD: lubie.Net!
+      ME_CONFIG_MONGODB_URL: mongodb://dotnetowiec:lubie.Net!@mongo:27017/
+    depends_on:
+      - mongo
+    networks:
+      - mongo_net
+      
+  iot-api:
+    image: iot-api
+    restart: always
+    ports:
+      - 8090:80
+    networks:
+      - mongo_net
+      - rabbit_net
+    
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    environment:
+        - RABBITMQ_USERNAME=dotnetowiec
+        - RABBITMQ_PASSWORD=kocham.Net!
+        - RABBITMQ_VHOST=iot
+    networks:
+        - rabbit_net
+
+networks:
+  rabbit_net:
+  mongo_net:
