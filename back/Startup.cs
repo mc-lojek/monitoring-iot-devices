@@ -18,7 +18,7 @@ namespace dot
     {
         public Startup(IConfiguration configuration)
         {
-            Console.Write("hello2");
+            Console.WriteLine("hello2");
             Configuration = configuration;
         }
         
@@ -26,26 +26,27 @@ namespace dot
         
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.Write("hello3");
+            Console.WriteLine("hello3");
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddSingleton<IotService>();
+            services.AddSingleton<SensorService>();
             services.Configure<IotDatabaseSettings>(Configuration.GetSection("IotDatabase"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            Console.Write("hello4");
-            if (env.IsDevelopment())
+            Console.WriteLine("hello4");
+            //if (app.env.IsDevelopment())
             {
-                Console.Write("hello5");
+                Console.WriteLine("hello5");
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
-
+            app.UseRouting();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

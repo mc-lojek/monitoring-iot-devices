@@ -12,16 +12,16 @@ namespace dot.Services
         private readonly IMongoCollection<Measurement> _measurementsCollection;
 
         public IotService(
-            IOptions<IotDatabaseSettings> bookStoreDatabaseSettings)
+            IOptions<IotDatabaseSettings> iotDatabaseSettings)
         {
             var mongoClient = new MongoClient(
-                bookStoreDatabaseSettings.Value.ConnectionString);
+                iotDatabaseSettings.Value.ConnectionString);
 
             var mongoDatabase = mongoClient.GetDatabase(
-                bookStoreDatabaseSettings.Value.DatabaseName);
+                iotDatabaseSettings.Value.DatabaseName);
 
             _measurementsCollection = mongoDatabase.GetCollection<Measurement>(
-                bookStoreDatabaseSettings.Value.BooksCollectionName);
+                iotDatabaseSettings.Value.MeasurementsCollectionName);
         }
 
         public async Task<List<Measurement>> GetAsync() =>

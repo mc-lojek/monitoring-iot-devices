@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace dot.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/measurement")]
     public class IotController : ControllerBase
     {
         private readonly IotService _iotService;
@@ -22,14 +22,14 @@ namespace dot.Controllers
         [HttpGet("{id:length(24)}")]
         public async Task<ActionResult<Measurement>> Get(string id)
         {
-            var book = await _iotService.GetAsync(id);
+            var measurement = await _iotService.GetAsync(id);
 
-            if (book is null)
+            if (measurement is null)
             {
                 return NotFound();
             }
 
-            return book;
+            return measurement;
         }
 
         [HttpPost]
