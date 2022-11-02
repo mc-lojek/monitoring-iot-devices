@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 
-namespace dot.Controllers;
-
-[ApiController]
-[Route("[controller]")]
-public class SensorController: ControllerBase
+namespace dot.Controllers
 {
-    [HttpGet(Name= "GetSensorData")]
-    public String Get()
+    [ApiController]
+    [Route("[controller]")]
+    public class SensorController : ControllerBase
     {
-        return "Hello world!";
+        [HttpGet(Name = "GetSensorData")]
+        public String Get()
+        {
+            return "Hello world!";
+        }
     }
 }
