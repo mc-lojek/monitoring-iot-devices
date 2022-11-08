@@ -10,9 +10,9 @@ namespace dot.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 
-        public float value { get; set; } = 0.0f;
-        public string? sensorId { get; set; }
-        public string type { get; set; }
-        public string unit { get; set; }
+        public float Value { get; set; } = 0.0f;
+        public string? SensorId { get; set; }
+        public string Type { get; set; }
+        public string Unit { get; set; }
     }
 }
