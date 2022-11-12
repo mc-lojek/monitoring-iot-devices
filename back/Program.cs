@@ -11,10 +11,8 @@ namespace dot
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("hello");
-            Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(builder => { builder.UseStartup<Startup>(); }).Build().Run();
-            Console.WriteLine("123hello");
-
+            Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(builder => { builder.UseStartup<Startup>(); })
+                .Build().Run();
         }
     }
 }

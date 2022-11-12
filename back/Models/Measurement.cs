@@ -3,7 +3,6 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace dot.Models
 {
-
     public class Measurement
     {
         [BsonId]
