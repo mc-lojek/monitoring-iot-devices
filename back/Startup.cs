@@ -28,7 +28,10 @@ namespace dot
         {
             Console.WriteLine("hello3");
             services.AddControllers();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v1", new OpenApiInfo() { Title = "Sensor measurements API", Version = "v1" });
+            });
             services.AddSingleton<IotService>();
             services.AddSingleton<SensorService>();
             services.Configure<IotDatabaseSettings>(Configuration.GetSection("IotDatabase"));
@@ -42,7 +45,10 @@ namespace dot
             {
                 Console.WriteLine("hello5");
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(config =>
+                {
+                    config.SwaggerEndpoint("/swagger/v1/swagger.json", "Sensor measurements API");
+                });
             }
 
             app.UseHttpsRedirection();

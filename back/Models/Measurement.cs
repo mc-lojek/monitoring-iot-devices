@@ -12,7 +12,7 @@ namespace dot.Models
 
         public float Value { get; set; } = 0.0f;
         public string? SensorId { get; set; }
-        public string Type { get; set; }
-        public string Unit { get; set; }
+        public string? Type { get; set; }
+        public string? Unit { get; set; }
     }
 }
