@@ -1,6 +1,7 @@
 published
 
 .idea
+.idea/*
 
 # Created by https://www.toptal.com/developers/gitignore/api/dotnetcore,rider,csharp
 # Edit at https://www.toptal.com/developers/gitignore?templates=dotnetcore,rider,csharp
