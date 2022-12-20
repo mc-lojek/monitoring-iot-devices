@@ -25,7 +25,8 @@ namespace dot.Services
         }
 
         public async Task<List<Measurement>> GetAsync() =>
-            await _measurementsCollection.Find(_ => true).ToListAsync();
+            await _measurementsCollection.Find(_ => true)
+                .ToListAsync();
 
         public async Task<Measurement?> GetAsync(string id) =>
             await _measurementsCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
