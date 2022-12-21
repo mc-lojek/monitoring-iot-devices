@@ -1,6 +1,6 @@
 ﻿namespace dot.Models
 {
-    public class OwnerParameters
+    public class QueryParameters
     {
         const int maxPageSize = 50;
         public int PageNumber { get; set; } = 1;
@@ -16,5 +16,11 @@
                 _pageSize = (value > maxPageSize) ? maxPageSize : value;
             }
         }
+
+        public string OrderBy { get; set; } = "Date";
+        public string? Type { get; set; }
+        public string? SensorId { get; set; }
+        public string? Since { get; set; }
+        public string? Until { get; set; }
     }
 }

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using dot.Models;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace dot.Services
@@ -24,10 +26,46 @@ namespace dot.Services
                 iotDatabaseSettings.Value.MeasurementsCollectionName);
         }
 
-        public async Task<List<Measurement>> GetAsync() =>
-            await _measurementsCollection.Find(_ => true)
+        public async Task<List<Measurement>> GetAsync(QueryParameters parameters)
+        {
+            var filter = Builders<Measurement>.Filter.Empty;
+
+            if (!string.IsNullOrEmpty(parameters.SensorId))
+            {
+                filter &= Builders<Measurement>.Filter.Regex("SensorId", new BsonRegularExpression(parameters.SensorId, "i"));
+            }
+
+            if (!string.IsNullOrEmpty(parameters.Type))
+            {
+                filter &= Builders<Measurement>.Filter.Regex("Type", new BsonRegularExpression(parameters.Type, "i"));
+            }
+
+            if (!string.IsNullOrEmpty(parameters.Since))
+            {
+                filter &= Builders<Measurement>.Filter.Gte("Date", DateTime.Parse(parameters.Since));
+            }
+            
+            if (!string.IsNullOrEmpty(parameters.Until))
+            {
+                filter &= Builders<Measurement>.Filter.Lte("Date", DateTime.Parse(parameters.Until));
+            }
+            
+            var desc = 1;
+            var order = parameters.OrderBy;
+            if (parameters.OrderBy.StartsWith("-"))
+            {
+                order = order.Remove(0, 1);
+                desc = -1;
+            }
+            
+            return await _measurementsCollection.Find(filter)
+                .Sort("{" + order + ": " + desc + "}")
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Limit(parameters.PageSize)
                 .ToListAsync();
 
+        }
+            
         public async Task<Measurement?> GetAsync(string id) =>
             await _measurementsCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 

@@ -16,8 +16,8 @@ namespace dot.Controllers
             _iotService = iotService;
 
         [HttpGet]
-        public async Task<List<Measurement>> Get() =>
-            await _iotService.GetAsync();
+        public async Task<List<Measurement>> Get([FromQuery] QueryParameters query) =>
+            await _iotService.GetAsync(query);
 
         [HttpGet("{id:length(24)}")]
         public async Task<ActionResult<Measurement>> Get(string id)
