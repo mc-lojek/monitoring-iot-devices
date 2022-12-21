@@ -1,3 +1,4 @@
+using dot.Config;
 using dot.Models;
 using dot.Services;
 using Microsoft.AspNetCore.Builder;
@@ -24,8 +25,11 @@ namespace dot
                 config.SwaggerDoc("v1", new OpenApiInfo() { Title = "Sensor measurements API", Version = "v1" });
             });
             services.AddSingleton<IotService>();
-            services.AddSingleton<SensorService>();
             services.Configure<IotDatabaseSettings>(Configuration.GetSection("IotDatabase"));
+            services.Configure<RabbitMqConfiguration>(a => Configuration.GetSection("RabbitMqConfiguration").Bind(a));
+            services.AddSingleton<RabbitMqService>();
+            services.AddSingleton<ConsumerService>();
+            services.AddHostedService<ConsumerHostedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
