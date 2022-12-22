@@ -1,2 +1,2 @@
 docker build -t iot-api -f ./api-dockerfile ../back
-docker compose up
+docker compose -f docker-compose.local.yml up
