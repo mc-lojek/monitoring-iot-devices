@@ -28,6 +28,8 @@ services:
       - mongo_net
       
   iot-api:
+    depends_on:
+      - rabbitmq
     image: iot-api
     restart: always
     ports:

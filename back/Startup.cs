@@ -45,6 +45,10 @@ namespace dot
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
             app.UseRouting();
             app.UseAuthorization();
 

@@ -7,6 +7,7 @@ from datetime import datetime
 import pika
 
 
+
 class MessagesProducer:
 
     def __init__(self):
@@ -14,6 +15,8 @@ class MessagesProducer:
         self.__connection = \
             pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, "/", credentials))
         self.__channel = self.connection.channel()
+
+        self.sensor_id_counter = 1
 
     def __del__(self):
         self.__connection.close()
@@ -67,8 +70,9 @@ class MessagesProducer:
     def _gen_sensor(self, sensor_type: str):
         sensor = {
             'type': sensor_type,
-            'Id': str(uuid.uuid1())
+            'Id': str(self.sensor_id_counter)
         }
+        self.sensor_id_counter += 1
         return sensor
 
     # generate sensors, measurments data, serialize it to json
