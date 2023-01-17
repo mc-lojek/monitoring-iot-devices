@@ -19,6 +19,7 @@ services:
     restart: always
     ports:
         - 17633:15672
+        - 17634:5672
     environment:
         - RABBITMQ_USERNAME=dotnetowiec
         - RABBITMQ_PASSWORD=kocham.Net!

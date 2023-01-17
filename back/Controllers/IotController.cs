@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using dot.Models;
 using dot.Services;
@@ -70,6 +73,16 @@ namespace dot.Controllers
             await _iotService.RemoveAsync(id);
 
             return NoContent();
+        }
+        
+        [HttpGet("json")]
+        public IActionResult GetJson([FromQuery] QueryParameters query)
+        {
+            var j = _iotService.GetSync(query);
+            var json = JsonSerializer.Serialize(j);
+            var bytes = Encoding.UTF8.GetBytes(json);
+            Console.WriteLine("bytes " + json);
+            return new FileContentResult(bytes, "application/octet-stream");
         }
     }
 }

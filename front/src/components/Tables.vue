@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     getMeasurements: function () {
-      const url = 'http://127.0.0.1:8090/api/measurement'
+      const url = 'http://localhost:8888/api/measurement'
       axios.get(url)
           .then(response => {
             console.log(JSON.stringify(response.data))

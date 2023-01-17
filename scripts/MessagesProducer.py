@@ -13,7 +13,7 @@ class MessagesProducer:
     def __init__(self):
         credentials = pika.PlainCredentials("dotnetowiec", "kocham.Net!")
         self.__connection = \
-            pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, "/", credentials))
+            pika.BlockingConnection(pika.ConnectionParameters('localhost', 8890, "/", credentials))
         self.__channel = self.connection.channel()
 
         self.sensor_id_counter = 1

@@ -77,5 +77,45 @@ namespace dot.Services
 
         public async Task RemoveAsync(string id) =>
             await _measurementsCollection.DeleteOneAsync(x => x.Id == id);
+
+        public List<Measurement> GetSync(QueryParameters parameters)
+        {
+            var filter = Builders<Measurement>.Filter.Empty;
+
+            if (!string.IsNullOrEmpty(parameters.SensorId))
+            {
+                filter &= Builders<Measurement>.Filter.Regex("SensorId", new BsonRegularExpression(parameters.SensorId, "i"));
+            }
+
+            if (!string.IsNullOrEmpty(parameters.Type))
+            {
+                filter &= Builders<Measurement>.Filter.Regex("Type", new BsonRegularExpression(parameters.Type, "i"));
+            }
+
+            if (!string.IsNullOrEmpty(parameters.Since))
+            {
+                filter &= Builders<Measurement>.Filter.Gte("Date", DateTime.Parse(parameters.Since));
+            }
+            
+            if (!string.IsNullOrEmpty(parameters.Until))
+            {
+                filter &= Builders<Measurement>.Filter.Lte("Date", DateTime.Parse(parameters.Until));
+            }
+            
+            var desc = 1;
+            var order = parameters.OrderBy;
+            if (parameters.OrderBy.StartsWith("-"))
+            {
+                order = order.Remove(0, 1);
+                desc = -1;
+            }
+
+            
+            return _measurementsCollection.Find(filter)
+                .Sort("{" + order + ": " + desc + "}")
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Limit(parameters.PageSize)
+                .ToList();
+        }
     }
 }

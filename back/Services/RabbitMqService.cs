@@ -1,4 +1,5 @@
-﻿using dot.Config;
+﻿using System;
+using dot.Config;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 
@@ -13,15 +14,35 @@ namespace dot.Services
         }
         public IConnection CreateChannel()
         {
-            ConnectionFactory connection = new ConnectionFactory()
+            while (true)
             {
-                UserName = _configuration.Username,
-                Password = _configuration.Password,
-                HostName = _configuration.HostName
-            };
-            connection.DispatchConsumersAsync = true;
-            var channel = connection.CreateConnection();
-            return channel;
+                try
+                {
+                    ConnectionFactory connection = new ConnectionFactory()
+                    {
+                        UserName = _configuration.Username,
+                        Password = _configuration.Password,
+                        HostName = _configuration.HostName
+                    };
+                    connection.DispatchConsumersAsync = true;
+                    var channel = connection.CreateConnection();
+                    return channel;
+                }
+                catch (Exception e)
+                {
+                    ConnectionFactory connection = new ConnectionFactory()
+                    {
+                        UserName = _configuration.Username,
+                        Password = _configuration.Password,
+                        HostName = _configuration.HostName
+                    };
+                    
+                    
+                    Console.WriteLine("mamy klopot z rabbitem");
+                    Console.WriteLine("connection: " + connection.Uri);
+                }    
+            }
+            
         }
     }
 }
